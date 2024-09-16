@@ -14,5 +14,3 @@ print(f"2 mulitplied : Sum value is {mul_value}")
 
 mul_value2 = 3 * sum(first,second)
 print(f"3 mulitplied : Sum value is {mul_value2}")
-
-
