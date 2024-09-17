@@ -19,14 +19,9 @@
 #Solution
 number=input("Enter the number")
 arr1 =[1,2,3,4]
-if number==1:
-    print(0)
-elif number==2:
-    print(1)
-elif number==3:
-    print(2)
-else:
-    print(3)
+for x in arr1:
+    print(x-1)
+    
         
 
 
