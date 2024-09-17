@@ -4,9 +4,8 @@ def issubset(a1, a2):
             return False
     return True
 
-a1 = [1,2,4,6]
-a2 = [1,4]
+a1 = [11,7,1]
+a2 = [11,3,7,1,7]
 
 
 print(issubset(a1, a2))
-
