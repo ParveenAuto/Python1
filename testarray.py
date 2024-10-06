@@ -1,4 +1,4 @@
-#Que1 take a list with with combination of 10 alaphabet and numbers and print all data one by one starting from 2nd no to second last number
+#Que1 take a list with combination of 10 alaphabet and numbers and print all data one by one starting from 2nd no to second last number
 #Solution
 # mylist=("a", 3, 5, 6, 9, 90, "g", "r", "p", 7)
 # for i in range(1, len(mylist)-1):
@@ -27,6 +27,20 @@
 
 # y= findelement(arr, x)
 # print(y)
+
+
+#Que4 Find largest element in the array
+
+# def findlargestelement(arr):
+#     if len(arr)==0:
+#         return "Array is empty"
+#     largest_element= max(arr)
+#     return largest_element
+# arr=[1,5,80,0,2345,12]
+# print(f"Largest number in array is {findlargestelement(arr)}")
+
+
+
 
 
 
