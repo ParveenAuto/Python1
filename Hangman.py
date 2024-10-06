@@ -1,20 +1,78 @@
+# Hangman case
+HANGMANPICS = ['''
+  +---+
+  |   |
+      |
+      |
+      |
+      |
+=========''', '''
+  +---+
+  |   |
+  O   |
+      |
+      |
+      |
+=========''', '''
+  +---+
+  |   |
+  O   |
+  |   |
+      |
+      |
+=========''', '''
+  +---+
+  |   |
+  O   |
+ /|   |
+      |
+      |
+=========''', '''
+  +---+
+  |   |
+  O   |
+ /|\  |
+      |
+      |
+=========''', '''
+  +---+
+  |   |
+  O   |
+ /|\  |
+ /    |
+      |
+=========''', '''
+  +---+
+  |   |
+  O   |
+ /|\  |
+ / \  |
+      |
+=========''']
+
 import random
 
 word_list = ["aardvark", "baboon", "camel"]
-
-# Hangman case
-# TODO-1 - Randomly choose word from word list and assign variable chosen_word and print it
 chosen_word = random.choice(word_list)
 print(chosen_word)
 
-# TODO-2- Ask the user to guess a letter and assign the letter to variable called guess. make lettter lowercase.
-guess = input("Guss the letter: ").lower()
-print(guess)
+placeholder = ""
+word_length = len(chosen_word)
+for position in range(word_length):
+    placeholder += "_"
+print("Word to guess: " + placeholder)
 
-#TODO-3- Check if the letter user guessed is one of the letter in choden word. Print Right if it is, "Wrong" if it's not.
-
+game_over = False
+while not game_over:
+    guess = input("Guess the letter: ").lower()
+display = ""
 for letter in chosen_word:
     if letter == guess:
-        print("Right")
+        display += letter
     else:
-        print("Wrong")
+        display += "_"
+print(display)
+
+if "_" not in display:
+    game_over = True
+    print ("You win.")
