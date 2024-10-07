@@ -39,7 +39,32 @@
 # arr=[1,5,80,0,2345,12]
 # print(f"Largest number in array is {findlargestelement(arr)}")
 
+#Que5 Reverse array
+# def reverse_array(input_arr):
+#     reversed_array= input_arr[::-1]
+#     return reversed_array
+    
+# input_arr= [1,9,6,0,4]
+# print(reverse_array(input_arr))
 
+#Que6 Given an array arr of positive integers. Reverse every sub-array group of size k.
+def reverse_in_groups(arr, n, k):
+    # Traverse the array in chunks of size k
+    for i in range(0, n, k):
+        # Reverse the sub-array from index i to i+k-1
+        arr[i:i+k] = arr[i:i+k][::-1]
+
+    return arr
+
+# Example usage
+arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+k = 3
+n = len(arr)
+
+result = reverse_in_groups(arr, n, k)
+print(f"The array after reversing sub-arrays of size {k}: {result}")
+
+        
 
 
 
