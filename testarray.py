@@ -48,21 +48,20 @@
 # print(reverse_array(input_arr))
 
 #Que6 Given an array arr of positive integers. Reverse every sub-array group of size k.
-def reverse_in_groups(arr, n, k):
-    # Traverse the array in chunks of size k
-    for i in range(0, n, k):
-        # Reverse the sub-array from index i to i+k-1
-        arr[i:i+k] = arr[i:i+k][::-1]
+# def reverse_in_groups(arr, n, k):
+#     # Traverse the array in chunks of size k
+#     for i in range(0, n, k):
+#         # Reverse the sub-array from index i to i+k-1
+#         arr[i:i+k] = arr[i:i+k][::-1]
+#     return arr
 
-    return arr
+# arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+# n = len(arr)
+# k = int(input("enter the value"))
 
-# Example usage
-arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-k = 3
-n = len(arr)
+# result = reverse_in_groups(arr, n, k)
+# print(f"The array after reversing sub-arrays of size {k}: {result}")
 
-result = reverse_in_groups(arr, n, k)
-print(f"The array after reversing sub-arrays of size {k}: {result}")
 
         
 
