@@ -1,21 +1,25 @@
 # Develop calculator
-def add(n1, n2):
-    if symbol == '+':
-        return n1 + n2
-#def subtract(n1, n2):
-    elif symbol == '-':
-        return n1 - n2
-#def multiply(n1, n2):
-    elif symbol == '*':
-        return n1 * n2
-#def divide(n1, n2):
+def calculator(n1, n2):
+    operator=input("Which operator you want to run?\n +\n -\n *\n /\n ")
+    n1=float(input("enter the first number"))
+    n2=float(input("enter the second number"))
+    
+    if operator == '+':
+        result = n1 + n2
+
+    elif operator == '-':
+        result = n1 - n2
+
+    elif operator == '*':
+        result = n1 * n2
+   
+    elif operator == '/':
+        if n2 == 0:
+            return "Error! Division by zero."
+        result = n1/n2
     else:
-        return n1/n2
+            return "Invalid Operator!"
+    return f"Result is: "
 
-symbol=input("Which operator you want to run? +, -, *, / ")
-n1=int(input("enter the number"))
-n2=int(input("enter the number"))
-
-
-print(f"Your output is ")
+print(f"Your output is {calculator(n1, n2)}")
 
