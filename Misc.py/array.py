@@ -15,7 +15,8 @@
 # print(union)
 # print(intersection)
 
-#Que3 Given an array, arr of n integers, and an integer element x, find whether element x is present in the array. Return the index of the first occurrence of x in the array, or -1 if it doesn't exist.
+#Que3 Given an array, arr of n integers, and an integer element x, find whether element x is present in the array. 
+# Return the index of the first occurrence of x in the array, or -1 if it doesn't exist.
 #Solution
 
 # def findelement(arr, x):
@@ -62,7 +63,17 @@
 # result = reverse_in_groups(arr, n, k)
 # print(f"The array after reversing sub-arrays of size {k}: {result}")
 
-
+#Que7 Find missing number in array
+def find_missing_array(arr):
+    n= len(arr)+1
+    total_sum= (n*(n+1))/2
+    array_sum = sum(arr)
+    missing_number= total_sum-array_sum
+    return missing_number
+    
+            
+arr= [1,2,3,4,5,6,8,9,10]
+print(f"Mising array is {find_missing_array(arr)}")
         
 
 
