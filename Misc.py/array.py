@@ -64,16 +64,33 @@
 # print(f"The array after reversing sub-arrays of size {k}: {result}")
 
 #Que7 Find missing number in array
-def find_missing_array(arr):
-    n= len(arr)+1
-    total_sum= (n*(n+1))/2
-    array_sum = sum(arr)
-    missing_number= total_sum-array_sum
-    return missing_number
+
+# def find_missing_array(arr):
+#     n= len(arr)+1
+#     total_sum= (n*(n+1))/2
+#     array_sum = sum(arr)
+#     missing_number= total_sum - array_sum
+#     return missing_number
+                
+# arr= [1,2,3,4,5,6,8,9,10]
+# print(f"Mising array is {find_missing_array(arr)}")
+
+#Que7 Find all the numbers missing in array
+
+def find_missing_numbers(arr, n):
+    # Create a set of all numbers from 1 to n
+    full_set = set(range(1, n + 1))
     
-            
-arr= [1,2,3,4,5,6,8,9,10]
-print(f"Mising array is {find_missing_array(arr)}")
+    # Convert the array to a set to remove duplicates and allow fast lookups
+    arr_set = set(arr)
+    
+    # The missing numbers are the difference between the full set and the array set
+    missing_numbers = list(full_set - arr_set)
+    return missing_numbers
+
+arr = [1, 2, 4, 6, 7, 9]
+n = 9  
+print(f"The missing numbers are: {find_missing_numbers(arr, n)}")
         
 
 
