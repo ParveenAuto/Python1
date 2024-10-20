@@ -75,27 +75,46 @@
 # arr= [1,2,3,4,5,6,8,9,10]
 # print(f"Mising array is {find_missing_array(arr)}")
 
-#Que7 Find all the numbers missing in array
+#Que8 Find all the numbers missing in array
 
-def find_missing_numbers(arr, n):
-    # Create a set of all numbers from 1 to n
-    full_set = set(range(1, n + 1))
+# def find_missing_numbers(arr, n):
     
-    # Convert the array to a set to remove duplicates and allow fast lookups
-    arr_set = set(arr)
-    
-    # The missing numbers are the difference between the full set and the array set
-    missing_numbers = list(full_set - arr_set)
-    return missing_numbers
+#     full_set = set(range(1, n + 1))    # Create a set of all numbers from 1 to n
+#     arr_set = set(arr)   # Convert the array to a set to remove duplicates and allow fast lookups
+#     missing_numbers = list(full_set - arr_set)  # The missing numbers are the difference between the full set and the array set
+#     return missing_numbers
 
-arr = [1, 2, 4, 6, 7, 9]
-n = 9  
-print(f"The missing numbers are: {find_missing_numbers(arr, n)}")
+# arr = [1, 2, 4, 6, 7, 9]
+# n = 9  
+# print(f"The missing numbers are: {find_missing_numbers(arr, n)}")
         
+#Que9 Find an element which occurs more than once in array
 
+# def duplicate_number(arr):
 
+#     for i in range(0,len(arr)):
+#         for j in range(i+1,len(arr)):
+#             if arr[i] == arr[j]:
+#                 return arr[j]
+    
+# arr=[1,2,3,4,7,8,2,0]
+# print(f"Duplicate number is {duplicate_number(arr)}")
 
+#Que10 Find all elements which occurs more than once in array
 
+# def find_all_duplicates(arr):
+#     seen = set()
+#     duplicates = set()
+    
+#     for num in arr:
+#         if num in seen:
+#             duplicates.add(num)  # Add to duplicates if already seen
+#         else:
+#             seen.add(num)  # Add to seen set if encountering for the first time
+#     return list(duplicates)
+
+# arr = [1, 3, 4, 2, 5, 3, 2, 6, 4]  # Duplicates are 3, 2, and 4
+# print(f"The duplicate elements are: {find_all_duplicates(arr)}")
         
 
 
