@@ -136,20 +136,26 @@
 
 #Que11 Find second largest number in an arry
         
-def findsecondlargest(arr):
-    unique_numbers=list(set(arr))                    # Remove duplicates by converting the list to a set, then back to a sorted list
-    if len(unique_numbers)<2:
-        return "No second largest number in array"   #Check if there are at least two unique numbers
-    unique_numbers.sort(reverse=True)                #Sort the unique numbers in descending order
-    return unique_numbers[1]                         # The second largest number will be the second element
-arr=[2,4,9,34,98]
-print(findsecondlargest(arr))
+# def findsecondlargest(arr):
+#     unique_numbers=list(set(arr))                    # Remove duplicates by converting the list to a set, then back to a sorted list
+#     if len(unique_numbers)<2:                        #Check if there are at least two unique numbers
+#         return "No second largest number in array"   
+#     unique_numbers.sort(reverse=True)                #Sort the unique numbers in descending order
+#     return unique_numbers[1]                         # The second largest number will be the second element
+# arr=[2,4,9,34,98]
+# print(findsecondlargest(arr))
+
+
+#Que12 Sort an array
     
 
+# def sortarray(arr):
+#     arr.sort(reverse=False)
+#     return arr
+# arr=[2,1,3,4,0,0,1,2]
+# print(sortarray(arr))
 
 
-
-
-
+#Que13 
 
 
