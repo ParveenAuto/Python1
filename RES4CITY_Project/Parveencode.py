@@ -70,7 +70,7 @@ with pd.ExcelWriter(file_path, engine="openpyxl", mode="a", if_sheet_exists="rep
 print("Data successfully merged using MC_Enrolment_Info as the base file, with unique user_id and saved to 'final_data'")
 
 # ---- Add Enrolment Trend Analysis ----
-
+import matplotlib.pyplot as plt
 # Ensure 'enrolment_date_date' is in datetime format
 merged_df['enrolment_date_date'] = pd.to_datetime(merged_df['enrolment_date_date'], errors='coerce')
 
