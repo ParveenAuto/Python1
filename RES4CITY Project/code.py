@@ -25,7 +25,7 @@ for sheet, cols in columns_to_extract.items():
         df = pd.read_excel(xls, sheet_name=sheet, usecols=cols)
         data_frames[sheet] = df
     else:
-        print(f"⚠️ Warning: Sheet '{sheet}' not found in the Excel file.")
+        print(f"Warning: Sheet '{sheet}' not found in the Excel file.")
 
 # Ensure MC_Enrolment_Info is the base DataFrame
 if "MC_Enrolment_Info" not in data_frames:
