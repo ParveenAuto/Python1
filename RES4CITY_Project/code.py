@@ -2,7 +2,7 @@ import os
 import pandas as pd
 
 # Give file path here
-file_path = "/Users/pd/Desktop/tomara/RES4CITY_Analytics_Live_data_set_170225.xlsx"
+file_path = "/Users/pd/Desktop/python/RES4CITY_Project/RES4CITY_Analytics_Live_data_set_170225.xlsx"
 
 # File check 
 if not os.path.exists(file_path):
