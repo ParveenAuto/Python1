@@ -1,21 +1,21 @@
 import os
 import pandas as pd
 
-# Define file path
+# Give file path here
 file_path = "/Users/pd/Desktop/tomara/RES4CITY_Analytics_Live_data_set_170225.xlsx"
 
-# Verify if the file exists
+# File check 
 if not os.path.exists(file_path):
     raise FileNotFoundError(f"Error: File not found at {file_path}")
 
-# Define columns to extract (sheet_name: [columns])
+# Data from excel
 columns_to_extract = {
     "Users_Info": ["user_id", "country", "date_joined"],
     "MC_Enrolment_Info": ["user_id", "course_id", "enrolment_date"],
     "MC_Certificates": ["user_id", "course_id", "grade", "date_earned"],
 }
 
-# Read the Excel file
+# Read Excel
 xls = pd.ExcelFile(file_path)
 
 # Extract required columns from each sheet
@@ -65,6 +65,6 @@ if "course_id" in merged_df.columns:
 
 # Write to a new sheet inside the same Excel file
 with pd.ExcelWriter(file_path, engine="openpyxl", mode="a", if_sheet_exists="replace") as writer:
-    merged_df.to_excel(writer, sheet_name="newSheet", index=False)
+    merged_df.to_excel(writer, sheet_name="final_data", index=False)
 
-print("✅ Data successfully merged using MC_Enrolment_Info as the base, with unique user_id-course_id mappings, transformed, and written to 'newSheet' inside the Excel file.")
+print("Data successfully merged using MC_Enrolment_Info as the base file, with unique user_id and saved to 'final_data'")
