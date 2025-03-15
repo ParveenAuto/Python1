@@ -84,4 +84,4 @@ if "course_id" in merged_df.columns:
 with pd.ExcelWriter(file_path, engine="openpyxl", mode="a", if_sheet_exists="replace") as writer:
     merged_df.to_excel(writer, sheet_name="final_data", index=False)
 
-print("Data successfully merged using MC_Enrolment_Info as the base file, with unique user_id and saved to 'final_data'")
+print("Data successfully saved to 'final_data'")
