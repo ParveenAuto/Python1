@@ -49,7 +49,7 @@ merged_df = pd.concat(data_frames, axis=1)
 with pd.ExcelWriter(file_path, engine="openpyxl", mode="a", if_sheet_exists="replace") as writer:
     merged_df.to_excel(writer, sheet_name="newSheet", index=False)
 
-print("✅ Data successfully extracted and written to 'newSheet' inside the Excel file.")
+print("Data successfully extracted and written to 'newSheet' inside the Excel file.")
 
 
 ---
@@ -75,4 +75,4 @@ Ensure you have the required libraries installed:
 
 pip install pandas openpyxl
 
-Let me know if you need any modifications! 🚀
+Let me know if you need any modifications!

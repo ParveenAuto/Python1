@@ -47,14 +47,31 @@ if "MC_Certificates" in data_frames:
 # Remove duplicate entries based on all columns except 'date_earned'
 merged_df = merged_df.drop_duplicates(subset=[col for col in merged_df.columns if col != "date_earned"], keep='first')
 
-# Perform splitting after merging all data
-# Split date and time into separate columns
+# Convert date columns to datetime format
 for col in ["date_joined", "enrolment_date", "date_earned"]:
     if col in merged_df.columns:
         merged_df[col] = pd.to_datetime(merged_df[col], errors='coerce')
+
+# Extract date and time (without six-digit numbers)
+for col in ["date_joined", "enrolment_date", "date_earned"]:
+    if col in merged_df.columns:
         merged_df[f"{col}_date"] = merged_df[col].dt.date
-        merged_df[f"{col}_time"] = merged_df[col].dt.time
-        merged_df.drop(columns=[col], inplace=True)  # Remove original column
+        merged_df[f"{col}_time"] = merged_df[col].dt.strftime('%H:%M:%S')  # Extracts only HH:MM:SS
+
+# Drop the original datetime columns
+merged_df.drop(columns=["date_joined", "enrolment_date", "date_earned"], inplace=True, errors='ignore')
+
+# Rename columns
+column_rename_map = {
+    "date_joined_date": "date_joined",
+    "date_joined_time": "joined_time",
+    "enrolment_date_date": "enrolment-date",
+    "enrolment_date_time": "enrolment_time",
+    "date_earned_date": "date_earned",
+    "date_earned_time": "earned_time",
+}
+
+merged_df.rename(columns=column_rename_map, inplace=True)
 
 # Split course_id into course_id, organisation, and course_number
 if "course_id" in merged_df.columns:
@@ -68,28 +85,3 @@ with pd.ExcelWriter(file_path, engine="openpyxl", mode="a", if_sheet_exists="rep
     merged_df.to_excel(writer, sheet_name="final_data", index=False)
 
 print("Data successfully merged using MC_Enrolment_Info as the base file, with unique user_id and saved to 'final_data'")
-
-# ---- Add Enrolment Trend Analysis ----
-import matplotlib.pyplot as plt
-# Ensure 'enrolment_date_date' is in datetime format
-merged_df['enrolment_date_date'] = pd.to_datetime(merged_df['enrolment_date_date'], errors='coerce')
-
-# Extract Year-Month for grouping
-merged_df['Year-Month'] = merged_df['enrolment_date_date'].dt.to_period('M')
-
-# Count enrolments per month
-monthly_enrolments = merged_df.groupby('Year-Month').size()
-
-# Plot the trend
-plt.figure(figsize=(10, 5))
-plt.plot(monthly_enrolments.index.astype(str), monthly_enrolments.values, marker='o', linestyle='-', color='b')
-
-# Formatting
-plt.xlabel("Month")
-plt.ylabel("Number of Enrolments")
-plt.title("Monthly Enrolment Trend")
-plt.xticks(rotation=45)  # Rotate x-axis labels
-plt.grid(True)
-
-# Show plot
-plt.show()

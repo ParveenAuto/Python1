@@ -47,14 +47,31 @@ if "MC_Certificates" in data_frames:
 # Remove duplicate entries based on all columns except 'date_earned'
 merged_df = merged_df.drop_duplicates(subset=[col for col in merged_df.columns if col != "date_earned"], keep='first')
 
-# Perform splitting after merging all data
-# Split date and time into separate columns
+# Convert date columns to datetime format
 for col in ["date_joined", "enrolment_date", "date_earned"]:
     if col in merged_df.columns:
         merged_df[col] = pd.to_datetime(merged_df[col], errors='coerce')
+
+# Extract date and time (without six-digit numbers)
+for col in ["date_joined", "enrolment_date", "date_earned"]:
+    if col in merged_df.columns:
         merged_df[f"{col}_date"] = merged_df[col].dt.date
-        merged_df[f"{col}_time"] = merged_df[col].dt.time
-        merged_df.drop(columns=[col], inplace=True)  # Remove original column
+        merged_df[f"{col}_time"] = merged_df[col].dt.strftime('%H:%M:%S')  # Extracts only HH:MM:SS
+
+# Drop the original datetime columns
+merged_df.drop(columns=["date_joined", "enrolment_date", "date_earned"], inplace=True, errors='ignore')
+
+# Rename columns
+column_rename_map = {
+    "date_joined_date": "date_joined",
+    "date_joined_time": "joined_time",
+    "enrolment_date_date": "enrolment-date",
+    "enrolment_date_time": "enrolment_time",
+    "date_earned_date": "date_earned",
+    "date_earned_time": "earned_time",
+}
+
+merged_df.rename(columns=column_rename_map, inplace=True)
 
 # Split course_id into course_id, organisation, and course_number
 if "course_id" in merged_df.columns:
