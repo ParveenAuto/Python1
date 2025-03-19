@@ -17,7 +17,7 @@ courseware_df['course_number'] = courseware_df['course_id'].str.extract(r'(\bMC\
 # Count occurrences of course_number per user
 modules_attempted_fixed = courseware_df.groupby(['user_id', 'course_number']).size().reset_index(name='modules_attempted')
 
-# 📌 Step 3: Merge This Count Into Final Data
+# Step 3: Merge This Count Into Final Data
 final_data_fixed = final_data_df.merge(modules_attempted_fixed, on=['user_id', 'course_number'], how="left")
 
 # Fill missing values for modules_attempted (users with no module interactions get 0)
@@ -26,14 +26,14 @@ final_data_fixed['modules_attempted'].fillna(0, inplace=True)
 # Convert modules_attempted to integer
 final_data_fixed['modules_attempted'] = final_data_fixed['modules_attempted'].astype(int)
 
-# 📌 Step 4: Ensure Grades Are Taken Directly from Final Data
+# Step 4: Ensure Grades Are Taken Directly from Final Data
 final_data_fixed['grade'] = pd.to_numeric(final_data_fixed['grade'], errors='coerce')
 
 # Fill missing grades with 0 (assuming dropouts have no recorded grade)
 final_data_fixed['grade'].fillna(0, inplace=True)
 
-# 📌 Step 5: Save the Processed Dataset to CSV
+# Step 5: Save the Processed Dataset to CSV
 output_csv = "/Users/pd/Desktop/python/RES4CITY_Project/final_data_with_simplified_modules_attempted.csv"
 final_data_fixed.to_csv(output_csv, index=False)
 
-print(f"✅ Processed dataset saved as '{output_csv}'")
+print(f"Processed dataset saved as '{output_csv}'")
