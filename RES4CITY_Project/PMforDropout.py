@@ -16,7 +16,7 @@ import joblib
 file_path = "/Users/pd/Desktop/python/RES4CITY_Project/RapidMinerOutput.csv"
 df = pd.read_csv(file_path)
 
-# Step 3: Convert `grade` from percentage string to float
+# Step 3: Convert grade from percentage string to float
 df['grade'] = df['grade'].str.replace('%', '', regex=True).astype(float)
 
 # Step 4: Feature Engineering
