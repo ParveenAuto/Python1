@@ -1,60 +1,58 @@
+
 import pandas as pd
-import joblib
 import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
+import joblib
 
-# Load the trained model
-model = joblib.load("/Users/pd/Desktop/python/dropout_prediction_model.pkl")
+# Step 1: Load the trained model and scaler
+model = joblib.load("/Users/pd/Desktop/python/model_random_forest.pkl")
+scaler = joblib.load("/Users/pd/Desktop/python/dropout_scaler.pkl")
 
-# Load new students' early engagement data
+# Step 2: Load new student data
 new_students = pd.read_csv("/Users/pd/Desktop/python/RES4CITY_Project/future_students_sample.csv")
 
-# Convert `grade` from percentage string to float
-if "grade" in new_students.columns:
-    new_students["grade"] = new_students["grade"].str.replace('%', '', regex=True).astype(float)
-
-# Convert date columns to datetime
+# Step 3: Date preprocessing
 new_students["enrolment-date"] = pd.to_datetime(new_students["enrolment-date"], errors="coerce")
 new_students["date_joined"] = pd.to_datetime(new_students["date_joined"], errors="coerce")
+if "date_earned" in new_students.columns:
+    new_students["date_earned"] = pd.to_datetime(new_students["date_earned"], errors="coerce")
+    new_students["earned_flag"] = new_students["date_earned"].notna().astype(int)
+else:
+    new_students["earned_flag"] = 0
 
-# Calculate days since enrollment & days since joining
-new_students["days_since_enrollment"] = (pd.to_datetime("today") - new_students["enrolment-date"]).dt.days
-new_students["days_since_joined"] = (pd.to_datetime("today") - new_students["date_joined"]).dt.days
+# Step 4: Feature Engineering
+new_students["days_to_enroll"] = (new_students["enrolment-date"] - new_students["date_joined"]).dt.days
+new_students["week_enrolled"] = new_students["enrolment-date"].dt.weekday
+new_students["joined_hour"] = pd.to_datetime(new_students["joined_time"], errors="coerce").dt.hour
+new_students["days_since_enroll"] = (pd.Timestamp.now() - new_students["enrolment-date"]).dt.days
 
-# Fill missing values
-new_students["days_since_enrollment"].fillna(new_students["days_since_enrollment"].median(), inplace=True)
-new_students["days_since_joined"].fillna(new_students["days_since_joined"].median(), inplace=True)
+# Fill missing engineered features
+new_students.fillna({
+    "days_to_enroll": new_students["days_to_enroll"].median(),
+    "week_enrolled": new_students["week_enrolled"].mode()[0],
+    "joined_hour": new_students["joined_hour"].mode()[0],
+    "days_since_enroll": new_students["days_since_enroll"].median()
+}, inplace=True)
 
-# Load the feature names used during training
-training_features = joblib.load("/Users/pd/Desktop/python/model_features.pkl")  # This file must be saved during training
+# Step 5: Prepare features with correct alignment
+X_new = new_students.select_dtypes(include=[np.number])
 
-# Ensure feature alignment (Fixing the column mismatch error)
-# Step 1: Add missing columns (fill with 0)
-for col in training_features:
-    if col not in new_students.columns:
-        new_students[col] = 0  # Fill missing categorical columns with 0
+# Load training feature names from scaler object (stored during training)
+if hasattr(scaler, "feature_names_in_"):
+    expected_features = scaler.feature_names_in_
+else:
+    raise ValueError("Scaler does not have saved feature names. Please retrain with scikit-learn >= 1.0")
 
-# Step 2: Keep only the training columns (drop anything extra)
-X_new = new_students[training_features]
+# Align features: add missing columns, drop extras
+for col in expected_features:
+    if col not in X_new.columns:
+        X_new[col] = 0  # Fill missing columns with 0
+X_new = X_new[expected_features]  # Ensure correct column order
 
-# Predict dropout probabilities
-dropout_probabilities = model.predict_proba(X_new)[:, 1]
+# Step 6: Scale and Predict
+X_new_scaled = scaler.transform(X_new)
+predictions = model.predict(X_new_scaled)
+new_students["predicted_dropout"] = predictions
 
-# Add predictions to the dataset
-new_students["predicted_dropout_prob"] = dropout_probabilities
-
-# Save predictions
-new_students.to_csv("dropout_predictions_fixed.csv", index=False)
-print("Predictions saved as 'dropout_predictions_fixed.csv'")
-
-# Display top at-risk students
-print(new_students.sort_values(by="predicted_dropout_prob", ascending=False).head(10))
-
-# Plot Dropout Probability Distribution
-plt.figure(figsize=(10, 5))
-sns.histplot(dropout_probabilities, bins=20, kde=True, color="red")
-plt.title("Dropout Probability Distribution")
-plt.xlabel("Predicted Dropout Probability")
-plt.ylabel("Count")
-plt.show()
+# Step 7: Save predictions
+new_students.to_csv("predicted_dropouts.csv", index=False)
+print("Predictions saved to predicted_dropouts.csv")
