@@ -1,5 +1,5 @@
 
-# Step 1: Import Libraries
+#Import Libraries
 import pandas as pd
 import numpy as np
 import joblib
@@ -11,15 +11,15 @@ from xgboost import XGBClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 from datetime import datetime
 
-# Step 2: Load Dataset
+#Load Dataset
 df = pd.read_csv("/Users/pd/Desktop/python/RES4CITY_Project/RapidMinerOutput.csv")
 
-# Step 3: Date Processing
+#Date Processing
 df['enrolment-date'] = pd.to_datetime(df['enrolment-date'], errors='coerce')
 df['date_joined'] = pd.to_datetime(df['date_joined'], errors='coerce')
 df['date_earned'] = pd.to_datetime(df['date_earned'], errors='coerce')
 
-# Step 4: Feature Engineering
+#Feature Engineering
 df['days_to_enroll'] = (df['enrolment-date'] - df['date_joined']).dt.days
 df['earned_flag'] = df['date_earned'].notna().astype(int)
 df['week_enrolled'] = df['enrolment-date'].dt.weekday
@@ -32,7 +32,7 @@ df.fillna({
     'days_since_enroll': df['days_since_enroll'].median()
 }, inplace=True)
 
-# Step 5: Dropout Label (with controlled noise)
+#Dropout Label (with controlled noise)
 df['dropout'] = (
     (df['grade'].isna()) &
     (df['earned_flag'] == 0) &
@@ -43,20 +43,20 @@ np.random.seed(42)
 flip_idx = np.random.choice(df.index, size=int(0.07 * len(df)), replace=False)
 df.loc[flip_idx, 'dropout'] = 1 - df.loc[flip_idx, 'dropout']
 
-# Step 6: Prepare Features
+#Prepare Features
 drop_cols = ['user_id', 'enrolment-date', 'date_joined', 'date_earned',
              'joined_time', 'enrolment_time', 'earned_time', 'grade']
 X = df.drop(columns=drop_cols, errors='ignore').select_dtypes(include=[np.number])
 y = df['dropout']
 
-# Step 7: Train-Test Split and Scaling
+#Train-Test Split and Scaling
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 joblib.dump(scaler, "dropout_scaler.pkl")
 
-# Step 8: Train and Save Models
+#Train and Save Models
 models = {
     "random_forest": RandomForestClassifier(random_state=42),
     

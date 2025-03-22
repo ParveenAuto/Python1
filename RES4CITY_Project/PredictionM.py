@@ -3,14 +3,14 @@ import pandas as pd
 import numpy as np
 import joblib
 
-# Step 1: Load the trained model and scaler
+#Load the trained model and scaler
 model = joblib.load("/Users/pd/Desktop/python/model_random_forest.pkl")
 scaler = joblib.load("/Users/pd/Desktop/python/dropout_scaler.pkl")
 
-# Step 2: Load new student data
+#Load new student data
 new_students = pd.read_csv("/Users/pd/Desktop/python/RES4CITY_Project/future_students_sample.csv")
 
-# Step 3: Date preprocessing
+#Date preprocessing
 new_students["enrolment-date"] = pd.to_datetime(new_students["enrolment-date"], errors="coerce")
 new_students["date_joined"] = pd.to_datetime(new_students["date_joined"], errors="coerce")
 if "date_earned" in new_students.columns:
@@ -19,7 +19,7 @@ if "date_earned" in new_students.columns:
 else:
     new_students["earned_flag"] = 0
 
-# Step 4: Feature Engineering
+#Feature Engineering
 new_students["days_to_enroll"] = (new_students["enrolment-date"] - new_students["date_joined"]).dt.days
 new_students["week_enrolled"] = new_students["enrolment-date"].dt.weekday
 new_students["joined_hour"] = pd.to_datetime(new_students["joined_time"], errors="coerce").dt.hour
@@ -33,7 +33,7 @@ new_students.fillna({
     "days_since_enroll": new_students["days_since_enroll"].median()
 }, inplace=True)
 
-# Step 5: Prepare features with correct alignment
+#Prepare features with correct alignment
 X_new = new_students.select_dtypes(include=[np.number])
 
 # Load training feature names from scaler object (stored during training)
@@ -48,11 +48,11 @@ for col in expected_features:
         X_new[col] = 0  # Fill missing columns with 0
 X_new = X_new[expected_features]  # Ensure correct column order
 
-# Step 6: Scale and Predict
+#Scale and Predict
 X_new_scaled = scaler.transform(X_new)
 predictions = model.predict(X_new_scaled)
 new_students["predicted_dropout"] = predictions
 
-# Step 7: Save predictions
+#Save predictions
 new_students.to_csv("predicted_dropouts.csv", index=False)
 print("Predictions saved to predicted_dropouts.csv")
