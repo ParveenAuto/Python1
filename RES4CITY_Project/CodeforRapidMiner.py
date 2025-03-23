@@ -25,10 +25,8 @@ final_data_fixed['modules_attempted'].fillna(0, inplace=True)
 final_data_fixed['modules_attempted'] = final_data_fixed['modules_attempted'].astype(int)
 
 # Ensure Grades Are Taken Directly from Final Data
+final_data_fixed['grade'] = final_data_fixed['grade'].str.replace('%', '', regex=False)
 final_data_fixed['grade'] = pd.to_numeric(final_data_fixed['grade'], errors='coerce')
-
-#Fill missing grades with 0 (assuming dropouts have no recorded grade)
-final_data_fixed['grade'].fillna(0, inplace=True)
 
 
 #Save Processed Dataset to CSV

@@ -19,7 +19,7 @@ df['enrolment-date'] = pd.to_datetime(df['enrolment-date'], errors='coerce')
 df['date_joined'] = pd.to_datetime(df['date_joined'], errors='coerce')
 df['date_earned'] = pd.to_datetime(df['date_earned'], errors='coerce')
 
-#Feature Engineering
+#Feature engineering
 df['days_to_enroll'] = (df['enrolment-date'] - df['date_joined']).dt.days
 df['earned_flag'] = df['date_earned'].notna().astype(int)
 df['week_enrolled'] = df['enrolment-date'].dt.weekday
@@ -32,7 +32,7 @@ df.fillna({
     'days_since_enroll': df['days_since_enroll'].median()
 }, inplace=True)
 
-#Dropout Label (with controlled noise)
+#Dropout Label with controlled noise
 df['dropout'] = (
     (df['grade'].isna()) &
     (df['earned_flag'] == 0) &
