@@ -50,10 +50,14 @@ for col in ["date_joined", "enrolment_date", "date_earned"]:
     if col in merged_df.columns:
         merged_df[col] = pd.to_datetime(merged_df[col], errors='coerce')
 
-# Extract time only and remove the six-digit numbers (microseconds/milliseconds)
+
+# Extract date (overwrite the original column) and time (create a new column)
 for col in ["date_joined", "enrolment_date", "date_earned"]:
     if col in merged_df.columns:
-        merged_df[f"{col}_time"] = merged_df[col].dt.strftime('%H:%M:%S')  # Extracts only HH:MM:SS
+        merged_df[f"{col}_time"] = merged_df[col].dt.strftime('%H:%M:%S')  # Create a new column for time
+        merged_df[col] = merged_df[col].dt.date  # Overwrite original column with only the date
+
+
 
 # Rename columns
 column_rename_map = {
@@ -73,6 +77,20 @@ if "course_id" in merged_df.columns:
     merged_df["course_id"] = split_course[0]  # First split (before ':')
     merged_df["organisation"] = split_course[1]  # Second split (first '+')
     merged_df["course_number"] = split_course[2]  # Keep only the main course number
+    
+    
+# Define the desired column order
+desired_column_order = [
+    "user_id", "country", "course_id", "date_joined", "joined_time",
+    "enrolment-date", "enrolment_time", "organisation", "course_number",
+    "grade", "date_earned", "earned_time"
+]
+
+# Reorder columns
+merged_df = merged_df[desired_column_order]
+
+# Drop the course_id column
+merged_df.drop(columns=["course_id"], inplace=True)
 
 # Write to a new sheet inside the same Excel file
 with pd.ExcelWriter(file_path, engine="openpyxl", mode="a", if_sheet_exists="replace") as writer:
