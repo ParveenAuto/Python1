@@ -92,17 +92,16 @@ merged_df = merged_df[desired_column_order]
 # Drop the course_id column
 merged_df.drop(columns=["course_id"], inplace=True)
 
-# # Write to a new sheet inside the same Excel file
-# with pd.ExcelWriter(file_path, engine="openpyxl", mode="a", if_sheet_exists="replace") as writer:
-#     merged_df.to_excel(writer, sheet_name="final_data", index=False)
-    
-# Define new file path
+
+# # Define new file path
 new_file_path = "/Users/pd/Desktop/python/RES4CITY_Project/Cleaned_data.xlsx"
 
-# Save DataFrame to a new Excel file
+
+#  Save to a new file
 merged_df.to_excel(new_file_path, sheet_name="Cleaned_Data", index=False, engine="openpyxl")
 
-print(f"Data successfully saved to: {new_file_path}")
+#  Update 'final_data' in the original file
+with pd.ExcelWriter(file_path, engine="openpyxl", mode="a", if_sheet_exists="replace") as writer:
+    merged_df.to_excel(writer, sheet_name="final_data", index=False)
 
-
-print("Data successfully saved to 'final_data'.")
+print(f" Data successfully saved in:\n {new_file_path} (New file)\n {file_path} (Updated 'final_data' sheet)")
