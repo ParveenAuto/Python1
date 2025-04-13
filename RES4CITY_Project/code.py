@@ -93,7 +93,7 @@ merged_df = merged_df[desired_column_order]
 merged_df.drop(columns=["course_id"], inplace=True)
 
 
-# # Define new file path
+# Define new file path
 new_file_path = "/Users/pd/Desktop/python/RES4CITY_Project/Cleaned_data.xlsx"
 
 
