@@ -37,7 +37,7 @@ df['dropout'] = (
     (df['grade'].isna()) &
     (df['earned_flag'] == 0) &
     (df['modules_attempted'] <= 1) &
-    (df['days_since_enroll'] > 30)
+    (df['days_since_enroll'] > 15)
 ).astype(int)
 np.random.seed(42)
 flip_idx = np.random.choice(df.index, size=int(0.07 * len(df)), replace=False)
