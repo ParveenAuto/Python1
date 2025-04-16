@@ -4,11 +4,11 @@ import numpy as np
 import joblib
 
 #Load the trained model and scaler
-model = joblib.load("/Users/pd/Desktop/python/model_random_forest.pkl")
-scaler = joblib.load("/Users/pd/Desktop/python/dropout_scaler.pkl")
+model = joblib.load("/Users/pd/Desktop/python/RES4CITY_Project/model_random_forest.pkl")
+scaler = joblib.load("/Users/pd/Desktop/python/RES4CITY_Project/dropout_scaler.pkl")
 
 #Load new student data
-new_students = pd.read_csv("/Users/pd/Desktop/python/RES4CITY_Project/future_students_sample.csv")
+new_students = pd.read_csv("/Users/pd/Desktop/python/RES4CITY_Project/RES4CITY_Dummy_Data_For_ML_Model.csv")
 
 #Date preprocessing
 new_students["enrolment-date"] = pd.to_datetime(new_students["enrolment-date"], errors="coerce")
